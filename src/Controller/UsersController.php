@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -132,12 +133,25 @@ class UsersController extends AppController
 //        $this->set([
 //            'classes' =>$classes,
 //        ]);
-        $user = $this->Users->get($id, [
-            'contain' => ['Bookmarks']
-        ]);
-
+        $user = $this->Users->get($id);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
+
+        $userclasses = TableRegistry::get('Userclasses');
+//        $userclass = $this->UserClasses->get($id);
+
+        echo $userclasses->find()->select()->where(['id' => 1]);
+        echo $userclasses->find()->where(['user_id' => 1]);
+        echo $userclasses->find()->where(['Userclasses__id' => 1]);
+        echo $userclasses->find()->where(['defaultTypes' => ['id' =>1 ]]);
+        debug($userclasses->find()->where(['id' => 1]));
+
+
+
+        $this->set('userclasses', $userclasses);
+        $this->set('_serialize', ['userclasses']);
+
+
     }
 
 
