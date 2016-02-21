@@ -116,5 +116,29 @@ class UsersController extends AppController
         }
     }
 
+    public function userid($id = null){
+        //Getting all passed parameters
+        $userclasses = $this->request->params['pass'];
+
+        //Get all classes that have this user id
+
+
+
+        //get all classes
+//        $classes = $this->Userclasses->find('userclasses',[
+//            'classes'
+//        ]);
+//        // Pass into view
+//        $this->set([
+//            'classes' =>$classes,
+//        ]);
+        $user = $this->Users->get($id, [
+            'contain' => ['Bookmarks']
+        ]);
+
+        $this->set('user', $user);
+        $this->set('_serialize', ['user']);
+    }
+
 
 }

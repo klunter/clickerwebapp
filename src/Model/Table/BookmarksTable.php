@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  * Bookmarks Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsToMany $Tags
  */
 class BookmarksTable extends Table
 {
@@ -35,11 +34,6 @@ class BookmarksTable extends Table
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
-        ]);
-        $this->belongsToMany('Tags', [
-            'foreignKey' => 'bookmark_id',
-            'targetForeignKey' => 'tag_id',
-            'joinTable' => 'bookmarks_tags'
         ]);
     }
 
@@ -78,13 +72,5 @@ class BookmarksTable extends Table
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         return $rules;
-    }
-
-    public  function  findTagged(Query $query, array $options){
-        return $this->find()
-            ->distinct(['Bookmarks.id'])
-            ->matching('Tags', function(Query $q) use ($options){
-            return $q->where(['Tags.title IN' => $options['tags']]);
-        });
     }
 }
