@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Table\UserclassesTable;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -121,37 +122,39 @@ class UsersController extends AppController
         //Getting all passed parameters
         $userclasses = $this->request->params['pass'];
 
-        //Get all classes that have this user id
-
-
-
-        //get all classes
-//        $classes = $this->Userclasses->find('userclasses',[
-//            'classes'
-//        ]);
-//        // Pass into view
-//        $this->set([
-//            'classes' =>$classes,
-//        ]);
         $user = $this->Users->get($id);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
 
+
+
+
+
         $userclasses = TableRegistry::get('Userclasses');
-//        $userclass = $this->UserClasses->get($id);
 
-        echo $userclasses->find()->select()->where(['id' => 1]);
-        echo $userclasses->find()->where(['user_id' => 1]);
-        echo $userclasses->find()->where(['Userclasses__id' => 1]);
-        echo $userclasses->find()->where(['defaultTypes' => ['id' =>1 ]]);
-        debug($userclasses->find()->where(['id' => 1]));
+        echo $userclasses->table();
+        debug($userclasses);
 
 
 
-        $this->set('userclasses', $userclasses);
+        $this->set('userclasses', TableRegistry::get('Userclasses'));
         $this->set('_serialize', ['userclasses']);
 
+        $userclass = $userclasses->get($id, [
+            'contain' => ['Users', 'Questions']
+        ]);
 
+        $this->set('userclass', $userclass);
+        $this->set('_serialize', ['userclass']);
+
+        $this->paginate = [
+            'contain' => ['Users']
+        ];
+
+        $userclasses = $this->paginate($userclasses);
+
+        $this->set(compact('userclasses'));
+        $this->set('_serialize', ['userclasses']);
     }
 
 
