@@ -1,12 +1,20 @@
 <h1>Hello</h1>
-<?= h($user->email) ?>
+<?= h($user_email) ?>
 
 
-<?php foreach($userclasses as $userclass): ?>
-    <?php echo $userclass; ?>
-    <?php echo 'hello' ?>
+
+<?php foreach ($userclasses as $userclass): ?>
+    <div><?= h($userclass->class) ?></div>
+<?php endforeach; ?>
 
 
+<?php foreach ($userclasses as $userclass): ?>
+    <tr>
+        <td><?= $this->Number->format($userclass->id) ?></td>
+        <td><?= $userclass->has('user') ? $this->Html->link($userclass->user->id, ['controller' => 'Users', 'action' => 'view', $userclass->user->id]) : '' ?></td>
+        <td><?= h($userclass->class) ?></td>
+        <td><?= h($userclass->modified) ?></td>
+    </tr>
 <?php endforeach; ?>
 
 

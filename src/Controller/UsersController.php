@@ -120,41 +120,56 @@ class UsersController extends AppController
 
     public function userid($id = null){
         //Getting all passed parameters
-        $userclasses = $this->request->params['pass'];
+        //$userclasses = $this->request->params['pass'];
 
+        //Send user email
         $user = $this->Users->get($id);
-        $this->set('user', $user);
-        $this->set('_serialize', ['user']);
+        $this->set('user_email', $user['email']);
+        $this->set('_serialize', ['user_email']);
 
 
 
-
+        debug($user);
 
         $userclasses = TableRegistry::get('Userclasses');
 
-        echo $userclasses->table();
         debug($userclasses);
 
-
-
-        $this->set('userclasses', TableRegistry::get('Userclasses'));
-        $this->set('_serialize', ['userclasses']);
-
+        //Get by user id
         $userclass = $userclasses->get($id, [
-            'contain' => ['Users', 'Questions']
+            'contain' => ['Questions']
         ]);
 
-        $this->set('userclass', $userclass);
-        $this->set('_serialize', ['userclass']);
+//        debug($userclass);
 
-        $this->paginate = [
-            'contain' => ['Users']
-        ];
 
-        $userclasses = $this->paginate($userclasses);
+        $userclasses = $userclasses->find()->where(['user_id' => $id]);
 
-        $this->set(compact('userclasses'));
+        foreach($userclasses as $test){
+            debug($test);
+        }
+
+        $this->set('userclasses', $userclasses);
         $this->set('_serialize', ['userclasses']);
+//
+//        $userclass = $userclasses->get($id, [
+//            'contain' => ['Users', 'Questions']
+//        ]);
+//
+//        debug($userclass);
+//        $this->set('userclass', $userclass);
+//        $this->set('_serialize', ['userclass']);
+//
+//
+//
+//        $this->paginate = [
+//            'contain' => ['Users']
+//        ];
+//
+//        $userclasses = $this->paginate($userclasses);
+//
+//        $this->set(compact('userclasses'));
+//        $this->set('_serialize', ['userclasses']);
     }
 
 

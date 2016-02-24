@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Userclasses Controller
@@ -111,23 +112,23 @@ class UserclassesController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function classes($id = null){
+    public function questions($id = null){
 
             //Getting all passed parameters
             $userclasses = $this->request->params['pass'];
 
-            //Get all classes that have this user id
+            //Get all questions that have this user calss id
+            $questions = TableRegistry::get('Questions');
+            debug($questions);
 
+            $questions = $questions->find()->where(['userclass_id' => $id]);
 
+            foreach($questions as $question){
+                debug($question);
+             }
+            $this->set('questions', $questions);
+            $this->set('_serialize', ['questions']);
 
-            //get all classes
-//        $classes = $this->Userclasses->find('userclasses',[
-//            'classes'
-//        ]);
-//        // Pass into view
-//        $this->set([
-//            'classes' =>$classes,
-//        ]);
 
     }
 

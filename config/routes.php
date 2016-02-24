@@ -58,7 +58,7 @@ Router::connect(
     );
 Router::connect(
     '/users/:id/:class_id',
-    ['controller' => 'userclasses', 'action' => 'classes' ],
+    ['controller' => 'userclasses', 'action' => 'questions' ],
     ['id' => '\d+','pass' => ['id']]
 );
 
